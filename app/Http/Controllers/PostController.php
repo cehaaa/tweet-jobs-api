@@ -16,7 +16,7 @@ class PostController extends Controller
     {
 
         return Post::with(array('user' => function ($query) {
-            $query->select('id', 'username', 'job');
+            $query->select('id', 'username', 'job', 'email');
         }))->get();
     }
 
@@ -51,6 +51,7 @@ class PostController extends Controller
         $post->user_id = $request->user_id;
         $post->desc = $request->desc;
         $post->status = $request->status;
+        $post->picture = $picture->getClientOriginalName();
 
 
         $post->save();
