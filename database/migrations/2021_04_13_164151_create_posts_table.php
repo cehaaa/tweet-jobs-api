@@ -16,7 +16,7 @@ class CreatePostsTable extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('user_id');
-            $table->string('desc');
+            $table->string('desc')->nullable();
             $table->enum('status', ['tweet', 'job']);
             $table->string('picture')->nullable();
             $table->timestamps();
