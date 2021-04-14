@@ -11,4 +11,9 @@ class User extends Model
     protected $primaryKey = 'id';
     protected $table = 'users';
     protected $fillable = ['username', 'email', 'password', 'entry_year', 'graduation_year', 'major', 'date_of_birth', 'address', 'phone_number', 'job'];
+
+    public function post()
+    {
+        return $this->hasMany(Post::class);
+    }
 }
