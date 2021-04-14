@@ -15,11 +15,9 @@ class PostController extends Controller
     public function index()
     {
 
-        return Post::query()
-            ->with(array('user' => function ($query) {
-                $query->select('id', 'username', 'job');
-            }))
-            ->get();
+        return Post::with(array('user' => function ($query) {
+            $query->select('id', 'username', 'job');
+        }))->get();
     }
 
     /**
@@ -41,6 +39,25 @@ class PostController extends Controller
     public function store(Request $request)
     {
         //
+
+
+        $post = new Post;
+
+        $path = public_path() . "/post";
+
+        $picture = $request->file('picture');
+        $picture->move($path, $picture->getClientOriginalName());
+
+        $post->user_id = $request->user_id;
+        $post->desc = $request->desc;
+        $post->status = $request->status;
+
+
+        $post->save();
+
+        return response()->json([
+            'status' => 'post uploaded',
+        ]);
     }
 
     /**
