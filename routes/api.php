@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\JobsController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -23,13 +24,16 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get("/user", [UserController::class, 'index']);
+Route::get('/user/{id}', [UserController::class, 'showUserPost']);
 Route::get("/user_information/{id}", [UserController::class, 'userInformation']);
-Route::post("/user", [UserController::class, 'store']);
 Route::put('/user/{id}', [UserController::class, 'update']);
+Route::post("/user", [UserController::class, 'store']);
 Route::delete('/user/{id]', [UserController::class, 'destroy']);
 
 Route::get('/post', [PostController::class, 'index']);
 Route::post('/post', [PostController::class, 'store']);
+
+Route::get('jobs', [JobsController::class, 'index']);
 
 
 Route::post("/login", [UserController::class, 'login']);
