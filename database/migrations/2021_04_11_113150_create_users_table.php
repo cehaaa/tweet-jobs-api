@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->string('major')->nullable();
             $table->date('date_of_birth')->nullable();
             $table->string('address')->nullable();
-            $table->integer('phone_number')->nullable();
+            $table->string('phone_number')->nullable();
             $table->string('job')->nullable();
             $table->timestamps();
         });
