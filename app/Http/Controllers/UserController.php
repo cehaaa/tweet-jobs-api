@@ -93,9 +93,11 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function showUserPost($id)
     {
-        //
+        return User::where('id', $id)->with(array('post' => function ($query) {
+            $query->select('user_id', 'desc', 'status', 'picture')->orderBy('id', 'desc');
+        }))->get();
     }
 
     /**
@@ -122,8 +124,6 @@ class UserController extends Controller
 
         $user = User::findOrFail($id);
         $user->username = $request->username;
-        $user->email = $request->email;
-        $user->password = $request->password;
         $user->entry_year = $request->entry_year;
         $user->graduation_year = $request->graduation_year;
         $user->major = $request->major;
