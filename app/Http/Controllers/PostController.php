@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
+
+
 class PostController extends Controller
 {
     /**
@@ -15,7 +17,7 @@ class PostController extends Controller
     public function index()
     {
 
-        return Post::with(array('user' => function ($query) {
+        return Post::orderBy('id', 'desc')->with(array('user' => function ($query) {
             $query->select('id', 'username', 'job', 'email');
         }))->get();
     }
@@ -46,19 +48,26 @@ class PostController extends Controller
         $path = public_path() . "/post";
 
         $picture = $request->file('picture');
-        $picture->move($path, $picture->getClientOriginalName());
+
+        $pict = $picture;
+
+        if ($request->picture) {
+            $picture->move($path, $picture->getClientOriginalName());
+            $pict = $picture->getClientOriginalName();
+        }
 
         $post->user_id = $request->user_id;
         $post->desc = $request->desc;
+        $post->picture = $pict;
         $post->status = $request->status;
-        $post->picture = $picture->getClientOriginalName();
-
 
         $post->save();
 
         return response()->json([
             'status' => 'post uploaded',
         ]);
+
+        // return $request->picture;
     }
 
     /**
