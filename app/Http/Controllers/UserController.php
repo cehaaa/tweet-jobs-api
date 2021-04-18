@@ -19,7 +19,7 @@ class UserController extends Controller
         return User::all();
     }
 
-    public function userInformation($id)
+    public function userDetail($id)
     {
         return User::where('id', $id)->first();
     }
@@ -44,6 +44,19 @@ class UserController extends Controller
     {
         $password = Hash::make($request->password);
 
+        $path = public_path() . "/profile";
+
+        $profile_pict = $request->file('profile_pict');
+
+        $profile_img = $profile_pict;
+
+        if ($request->picture) {
+            $profile_pict->move($path, $profile_img->getClientOriginalName());
+            $profile_img = $profile_pict->getClientOriginalName();
+        }
+
+
+
         $user = new User;
         $user->username = $request->username;
         $user->email = $request->email;
@@ -55,11 +68,13 @@ class UserController extends Controller
         $user->address = $request->address;
         $user->phone_number = $request->phone_number;
         $user->job = $request->job;
+        $user->profile_img = $profile_img;
         $user->save();
 
         return response()->json(
             [
-                'status' => '1 Data recorded'
+                'status' => '1 Data recorded',
+                'user_id' => $user->id
             ]
         );
     }
@@ -93,11 +108,11 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function showUserPost($id)
+    public function userPost($id)
     {
         return User::where('id', $id)->with(array('post' => function ($query) {
             $query->select('user_id', 'desc', 'status', 'picture')->orderBy('id', 'desc');
-        }))->get();
+        }))->first();
     }
 
     /**
@@ -120,8 +135,6 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //s
-
         $user = User::findOrFail($id);
         $user->username = $request->username;
         $user->entry_year = $request->entry_year;
@@ -133,7 +146,7 @@ class UserController extends Controller
         $user->job = $request->job;
         $user->save();
 
-        return "1 Data udated";
+        return "1 Data updated";
     }
 
     /**
