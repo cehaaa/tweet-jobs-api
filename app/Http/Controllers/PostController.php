@@ -14,12 +14,22 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($status)
     {
 
-        return Post::orderBy('id', 'desc')->with(array('user' => function ($query) {
-            $query->select('id', 'username', 'job', 'email');
-        }))->get();
+        if ($status == 'all') {
+            return Post::orderBy('id', 'desc')->with(array('user' => function ($query) {
+                $query->select('id', 'username', 'job', 'email', 'profile_img');
+            }))->get();
+        } else if ($status == 'job') {
+            return Post::where('status', 'job')->orderBy('id', 'desc')->with(array("user" => function ($query) {
+                $query->select('id', 'username', 'profile_img');
+            }))->get();
+        } else if ($status == 'tweet') {
+            return Post::where('status', 'tweet')->orderBy('id', 'desc')->with(array("user" => function ($query) {
+                $query->select('id', 'username', 'profile_img');
+            }))->get();
+        }
     }
 
     /**
