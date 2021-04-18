@@ -23,17 +23,28 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+// get all users list
 Route::get("/user", [UserController::class, 'index']);
-Route::get('/user/{id}', [UserController::class, 'showUserPost']);
-Route::get("/user_information/{id}", [UserController::class, 'userInformation']);
+
+// show post for each user
+Route::get('/user/post/{id}', [UserController::class, 'userPost']);
+
+// show detail for each user
+Route::get("/user/detail/{id}", [UserController::class, 'userDetail']);
+
+// update profile for each user
 Route::put('/user/{id}', [UserController::class, 'update']);
-Route::post("/user", [UserController::class, 'store']);
+
+// delate user 
 Route::delete('/user/{id]', [UserController::class, 'destroy']);
 
-Route::get('/post', [PostController::class, 'index']);
+
+// get all posts list
+Route::get('/post/{status}', [PostController::class, 'index']);
+
+// create a post
 Route::post('/post', [PostController::class, 'store']);
 
-Route::get('jobs', [JobsController::class, 'index']);
-
-
 Route::post("/login", [UserController::class, 'login']);
+Route::post("/register", [UserController::class, 'store']);
