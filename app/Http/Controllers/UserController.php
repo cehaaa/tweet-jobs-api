@@ -111,7 +111,7 @@ class UserController extends Controller
     public function userPost($id)
     {
         return User::where('id', $id)->with(array('post' => function ($query) {
-            $query->select('user_id', 'desc', 'status', 'picture')->orderBy('id', 'desc');
+            $query->select('user_id', 'desc', 'status', 'picture', 'id')->orderBy('id', 'desc');
         }))->first();
     }
 

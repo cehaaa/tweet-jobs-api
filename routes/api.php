@@ -39,12 +39,12 @@ Route::put('/user/{id}', [UserController::class, 'update']);
 // delate user 
 Route::delete('/user/{id]', [UserController::class, 'destroy']);
 
-
 // get all posts list
 Route::get('/post/{status}', [PostController::class, 'index']);
 
 // create a post
 Route::post('/post', [PostController::class, 'store']);
+Route::delete('/post/{id}', [PostController::class, 'destroy']);
 
 Route::post("/login", [UserController::class, 'login']);
 Route::post("/register", [UserController::class, 'store']);
